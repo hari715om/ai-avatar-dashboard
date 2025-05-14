@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import './index.css';
 
-// Define the Avatar interface to match the avatar properties.
 interface Avatar {
   id: string;
   name: string;
@@ -11,8 +10,8 @@ interface Avatar {
 }
 
 function App() {
-  const [showForm, setShowForm] = useState(false); // State to toggle the form visibility
-  const [avatars, setAvatars] = useState<Avatar[]>([]); // State for avatars data
+  const [showForm, setShowForm] = useState(false);
+  const [avatars, setAvatars] = useState<Avatar[]>([]); 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,48 +19,44 @@ function App() {
     type: 'Personal Assistant',
   }); // Form data for new avatar
 
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
-  // Fetch avatars from Reqres API on initial load.
   useEffect(() => {
-    fetch('https://reqres.in/api/users?per_page=3') // Fetch 3 avatars for demo purposes
+    fetch('https://reqres.in/api/users?per_page=3') 
       .then((res) => res.json())
       .then((data) => {
-        // Map the fetched data into our Avatar structure
         const fetchedAvatars = data.data.map((user: any) => ({
           id: user.id.toString(),
           name: `${user.first_name} ${user.last_name}`,
           email: user.email,
           imageUrl: user.avatar,
-          type: 'Personal Assistant', // Default type
+          type: 'Personal Assistant', 
         }));
-        setAvatars(fetchedAvatars); // Set avatars from the API
-        setLoading(false); // Set loading to false after data is fetched
+        setAvatars(fetchedAvatars); 
+        setLoading(false); 
       })
       .catch((err) => {
         console.error('Failed to fetch avatars:', err);
-        setLoading(false); // Set loading to false even if fetching fails
+        setLoading(false); 
       });
   }, []);
 
-  // Handle avatar creation from the form
   const handleCreateAvatar = (e: React.FormEvent) => {
     e.preventDefault();
     const newAvatar: Avatar = {
-      id: Date.now().toString(), // Use current timestamp as a unique ID
+      id: Date.now().toString(),
       ...formData,
     };
-    setAvatars([...avatars, newAvatar]); // Add the new avatar to the list
+    setAvatars([...avatars, newAvatar]);
     setFormData({
       name: '',
       email: '',
       imageUrl: '',
       type: 'Personal Assistant',
-    }); // Reset form data
-    setShowForm(false); // Hide the form after submission
+    });
+    setShowForm(false);
   };
 
-  // Handle input changes in the form
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
